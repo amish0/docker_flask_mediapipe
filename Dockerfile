@@ -23,7 +23,7 @@ RUN pip install -r requirements.txt
 COPY . .
 
 # Expose the port on which the Flask app will run
-# EXPOSE 8000
+EXPOSE 8000
 
 # Set the entrypoint command to run the Flask app
-CMD ["python", "app1.py"]
+CMD ["python", "app.py"]

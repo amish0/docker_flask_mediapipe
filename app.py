@@ -1,63 +1,50 @@
-# simple python file for render hellow word in browser
-from flask import Flask
-from flask import render_template
-from cam_loader import CamLoader
-from flask_cors import CORS
-import flask_socketio as socketio
-import threading
-import random
-app = Flask(__name__)
+from flask import Flask, render_template
+from flask_socketio import SocketIO, emit
+import base64
+import numpy as np
+import cv2
+from mediapipe_test import ObjectDetector
 
-CORS(app)
-socketio = socketio.SocketIO(app, cors_allowed_origins="*")
+obj_det = ObjectDetector()
+app = Flask(__name__)
+socketio = SocketIO(app)
 
 @app.route('/')
-def hello_world():
-    # return 'Hello, World!'
-    message = "Hello, World!"
-    return render_template('index.html', message=message)
-
-def send_random_data():
-    while True:
-        x = random.randint(1, 100)
-        print("x: ", x)
-        socketio.emit('frame', x)
-        socketio.sleep(1)
+def index():
+    return render_template('index.html')
 
 @socketio.on('connect')
-def handle_connect(data):
-    # print("data: ", data)
-    print('Client connected')
-    socketio.emit('frame', 'Hello, World!')
+def test_connect():
+    emit('my_response', {'data': 'Connected'})
 
 @socketio.on('video_frame')
-def handle_frame(data):
-    print(data)
-    # cam_loader.stop()
-    # print('Client disconnected')
-
-@socketio.on('disconnect')
-def handle_disconnect():
-    print('Client disconnected')
-
-@socketio.on('message')
-def handle_message(data):
-    print('received message: ', data)
-
-@socketio.on('json')
-def handle_json(json):
-    print('received json: ' + str(json))
+def handle_video_frame(data):
+    try:
+        frame = data['frame']
+        #decode frame
+        image_data = base64.b64decode(frame.split(',')[1])
+        nparr = np.frombuffer(image_data, np.uint8)
+        # Decode array into image
+        image = cv2.imdecode(nparr, cv2.IMREAD_COLOR) # Assuming you have OpenCV installed
+        # Process the image as needed
+        print("Received frame:", image.shape)
+        image = obj_det.process(image)
+        # image = cv2.rectangle(image, (10, 10), (100, 100), (0, 255, 0), 2)
+        # Encode the image
+        # if len(image.shape) > 2:
+        _, buffer = cv2.imencode('.jpg', image)
+        image = base64.b64encode(buffer)
+        image = image.decode('utf-8')
+        # Send the processed image back
+        socketio.emit('request_frame', {'frame': 'data:image/jpeg;base64,' + image})
+    except:
+        print("Error processing frame")
+    # _, buffer = cv2.imencode('.jpg', image)
+    # image = base64.b64encode(buffer)
+    # image = image.decode('utf-8')
+    # # Send the processed image back
+    # socketio.emit('request_frame', {'frame': 'data:image/jpeg;base64,' + image})
 
 if __name__ == '__main__':
-    # app.run(host="0.0.0.0", port=8000, debug=True)
-    # app.run(debug=True)
-    t = threading.Thread(target=send_random_data)
-    t.daemon = True
-    t.start()
-    socketio.run(app,  host="0.0.0.0", port=8000, allow_unsafe_werkzeug=True, debug=True)
-# @app.route('/')
-# def hello_world():
-#     return 'Hello, World!'
-# if __name__ == '__main__':
-#     app.run(host="0.0.0.0", port=8000, debug=True)
-    
+    # context = ('cert.pem', 'key.pem')
+    socketio.run(app,  host="0.0.0.0", port=8000, debug=True, allow_unsafe_werkzeug=True)
