@@ -42,7 +42,6 @@ jobs:
           echo "List of all jobs done"
 
   build:
-    requires: test_python
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
