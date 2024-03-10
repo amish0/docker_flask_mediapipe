@@ -3,9 +3,10 @@ from flask_socketio import SocketIO, emit
 import base64
 import numpy as np
 import cv2
-from mediapipe_test import ObjectDetector
+import time
+# from mediapipe_test import ObjectDetector
 
-obj_det = ObjectDetector()
+# obj_det = ObjectDetector()
 app = Flask(__name__)
 socketio = SocketIO(app)
 
@@ -28,8 +29,10 @@ def handle_video_frame(data):
         image = cv2.imdecode(nparr, cv2.IMREAD_COLOR) # Assuming you have OpenCV installed
         # Process the image as needed
         print("Received frame:", image.shape)
-        image = obj_det.process(image)
-        # image = cv2.rectangle(image, (10, 10), (100, 100), (0, 255, 0), 2)
+        # image = obj_det.process(image)
+        image = cv2.rectangle(image, (10, 10), (100, 100), (0, 255, 0), 2)
+        time_stamp = time.time()
+        cv2.putText(image, str(time_stamp), (10, 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
         # Encode the image
         # if len(image.shape) > 2:
         _, buffer = cv2.imencode('.jpg', image)
@@ -44,7 +47,10 @@ def handle_video_frame(data):
     # image = image.decode('utf-8')
     # # Send the processed image back
     # socketio.emit('request_frame', {'frame': 'data:image/jpeg;base64,' + image})
-
+def run_test():
+    socketio.run(app,  host="0.0.0.0", port=8000, debug=True, allow_unsafe_werkzeug=True)
+    while True:
+        pass
 if __name__ == '__main__':
     # context = ('cert.pem', 'key.pem')
     socketio.run(app,  host="0.0.0.0", port=8000, debug=True, allow_unsafe_werkzeug=True)

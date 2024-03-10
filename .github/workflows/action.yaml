@@ -40,3 +40,39 @@ jobs:
           echo "initial test successful"
           # echo list of all job done
           echo "List of all jobs done"
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install build
+          pip install setuptools wheel twine
+
+      - name: Display Python version
+        run: |
+          python --version
+          pip --version
+      # - name: buld package
+      #   run: |
+      #     python -m build
+      - name: Build Wheel
+        run: python setup.py sdist bdist_wheel
+
+      - name: Store Wheel on GitHub
+        uses: actions/upload-artifact@v3
+        with:
+          name: wheel
+          path: dist
+      - name: Publish package
+        run: echo "Not publishing package"
