@@ -43,6 +43,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    needs: test_python
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
