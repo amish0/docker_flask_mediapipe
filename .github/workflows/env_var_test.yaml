@@ -10,7 +10,7 @@ on:
       environment:
         description: 'Environment name'
         required: true
-        default: 'default-environment'
+        default: Dev
 jobs:
   test_environment_variable:
     runs-on: ubuntu-latest
