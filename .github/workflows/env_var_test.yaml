@@ -1,0 +1,46 @@
+name: Environment and Repository Variables Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      repository:
+        description: 'Repository name'
+        required: true
+        default: 'default-repository'
+      environment:
+        description: 'Environment name'
+        required: true
+        default: 'default-environment'
+jobs:
+  test_environment_variable:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Display Python version
+        run: |
+          python --version
+          pip --version
+
+      - name: Echo the current date and time
+        run: |
+          echo "The current date and time is $(date)."
+          echo "initial test successful"
+          # echo list of all job done
+          echo "List of all jobs done"
+          echo "Repository: ${{ github.event.inputs.repository }}"
+          echo "Environment: ${{ github.event.inputs.environment }}"
+          echo "GITHUB_REPOSITORY: ${{ github.repository }}"
+          echo "GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}"
+          echo "GITHUB_ACTOR: ${{ github.actor }}"
+          echo "GITHUB_WORKFLOW: ${{ github.workflow }}"
+          echo "GITHUB_ACTION: ${{ github.action }}"
+          echo "GITHUB_EVENT_NAME: ${{ github.event_name }}"
+          echo "GITHUB_EVENT_PATH: ${{ github.event_path }}"
+    
