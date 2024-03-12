@@ -27,7 +27,7 @@ jobs:
           echo "initial test successful"
           # echo list of all job done
           echo "List of all jobs done"
-          echo "github environment variables ${{ ver.NAME }}$"
+          echo "github environment variables ${{ var.NAME }}$"
           echo "description: ${{var.DESCRIPTION}}"
           echo "APP ID: ${{ var.APP_ID }}"
           echo "GITHUB_SHA: ${{ github.sha }}"
