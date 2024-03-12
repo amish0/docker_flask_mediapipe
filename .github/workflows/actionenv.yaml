@@ -27,8 +27,10 @@ jobs:
           echo "initial test successful"
           # echo list of all job done
           echo "List of all jobs done"
-          echo "Repository: ${{ github.event.inputs.repository }}"
-          echo "Environment: ${{ github.event.inputs.environment }}"
+          echo "github environment variables ${{ ver.NAME }}$"
+          echo "description: ${{var.DESCRIPTION}}"
+          echo "APP ID: ${{ var.APP_ID }}"
+          echo "GITHUB_SHA: ${{ github.sha }}"
           echo "GITHUB_REPOSITORY: ${{ github.repository }}"
           echo "GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}"
           echo "GITHUB_ACTOR: ${{ github.actor }}"
