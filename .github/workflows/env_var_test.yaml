@@ -8,7 +8,7 @@ on:
         required: true
         default: 'default-repository'
       environment:
-        description: 'Environment name'
+        description: 'Environment name here'
         required: true
         default: Dev
 jobs:
