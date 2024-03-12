@@ -1,16 +1,9 @@
 name: Environment and Repository Variables Test
 
 on:
-  workflow_dispatch:
-    inputs:
-      repository:
-        description: 'Repository name'
-        required: true
-        default: 'default-repository'
-      environment:
-        description: 'Environment name'
-        required: true
-        default: Dev
+  push:
+    branches:
+      - developer
 jobs:
   test_environment_variable:
     runs-on: ubuntu-latest
