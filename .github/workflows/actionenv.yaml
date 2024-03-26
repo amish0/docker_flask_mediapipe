@@ -1,12 +1,14 @@
 name: Environment and Repository Variables Test
 
 on:
-  push:
-    branches:
-      - developer
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - developer
 jobs:
   test_environment_variable:
     runs-on: ubuntu-latest
+    environment: production
     env:
       name: production
       app_id: ${{vars.APP_ID }}
