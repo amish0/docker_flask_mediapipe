@@ -3,7 +3,7 @@ name: Python_docker_flask_mediapipe
 on:
   push:
     branches:
-      - main
+      - developer
   pull_request:
     branches:
       - main
@@ -41,7 +41,7 @@ jobs:
           # echo list of all job done
           echo "List of all jobs done"
 
-  build:
+  python_whl_build:
     runs-on: ubuntu-latest
     needs: test_python
     steps:
@@ -77,3 +77,25 @@ jobs:
           path: dist/*.whl
       - name: Publish package
         run: echo "Not publishing package"
+
+  docker_build:
+    runs-on: ubuntu-latest
+    needs: python_whl_build
+    steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERUSERNAME }}
+          password: ${{ secrets.DOCKERPASSWORD }}
+      -
+        name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: amish0/flask_opencv:latest
