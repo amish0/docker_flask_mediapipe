@@ -1,10 +1,10 @@
 name: Environment and Repository Variables Test
 
 on:
-  workflow_dispatch:
-  # push:
-  #   branches:
-  #     - developer
+  # workflow_dispatch:
+  push:
+    branches:
+      - developer
 jobs:
   test_environment_variable:
     runs-on: ubuntu-latest
