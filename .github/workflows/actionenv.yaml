@@ -23,23 +23,28 @@ jobs:
         run: |
           python --version
           pip --version
-      
-
       - name: Echo the current date and time
         run: |
           echo "The current date and time is $(date)."
           echo "initial test successful"
-          # echo list of all job done
-          echo "List of all jobs done"
-          echo "github environment variables ${{ env.NAME }}$"
-          echo "description: ${{env.DESCRIPTION}}"
-          echo "APP ID: ${{ var.APP_ID }}"
-          echo "GITHUB_SHA: ${{ github.sha }}"
-          echo "GITHUB_REPOSITORY: ${{ github.repository }}"
-          echo "GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}"
-          echo "GITHUB_ACTOR: ${{ github.actor }}"
-          echo "GITHUB_WORKFLOW: ${{ github.workflow }}"
-          echo "GITHUB_ACTION: ${{ github.action }}"
-          echo "GITHUB_EVENT_NAME: ${{ github.event_name }}"
-          echo "GITHUB_EVENT_PATH: ${{ github.event_path }}"
+          echo "enviroment variable ${{ env.APP_ID }}$"
+      
+
+      # - name: Echo the current date and time
+      #   run: |
+      #     echo "The current date and time is $(date)."
+      #     echo "initial test successful"
+      #     # echo list of all job done
+      #     echo "List of all jobs done"
+      #     echo "github environment variables ${{ env.NAME }}$"
+      #     echo "description: ${{env.DESCRIPTION}}"
+      #     echo "APP ID: ${{ var.APP_ID }}"
+      #     echo "GITHUB_SHA: ${{ github.sha }}"
+      #     echo "GITHUB_REPOSITORY: ${{ github.repository }}"
+      #     echo "GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}"
+      #     echo "GITHUB_ACTOR: ${{ github.actor }}"
+      #     echo "GITHUB_WORKFLOW: ${{ github.workflow }}"
+      #     echo "GITHUB_ACTION: ${{ github.action }}"
+      #     echo "GITHUB_EVENT_NAME: ${{ github.event_name }}"
+      #     echo "GITHUB_EVENT_PATH: ${{ github.event_path }}"
     
