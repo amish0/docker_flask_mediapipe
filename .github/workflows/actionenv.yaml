@@ -9,7 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: production
-      DESCRIPTION: "This is a test for environment variables"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
