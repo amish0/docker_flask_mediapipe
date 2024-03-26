@@ -3,7 +3,7 @@ name: Python_docker_flask_mediapipe
 on:
   push:
     branches:
-      - developer
+      - main
   pull_request:
     branches:
       - main
