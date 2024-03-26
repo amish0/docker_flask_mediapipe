@@ -7,7 +7,7 @@ on:
 jobs:
   test_environment_variable:
     runs-on: ubuntu-latest
-    environment:
+    env:
       name: production
     steps:
       - name: Checkout repository
@@ -26,7 +26,7 @@ jobs:
         run: |
           echo "The current date and time is $(date)."
           echo "initial test successful"
-          echo "enviroment variable ${{ env.APP_ID }}$"
+          echo "enviroment variable ${{ vars.APP_ID }}$"
       
 
       # - name: Echo the current date and time
