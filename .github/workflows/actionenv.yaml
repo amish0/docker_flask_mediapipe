@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       name: production
+      app_id: ${{vars.APP_ID }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -26,7 +27,7 @@ jobs:
         run: |
           echo "The current date and time is $(date)."
           echo "initial test successful"
-          echo "enviroment variable ${{production.vars.APP_ID }}$"
+          echo "enviroment variable $app_id"
       
 
       # - name: Echo the current date and time
