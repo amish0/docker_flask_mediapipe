@@ -14,7 +14,7 @@ jobs:
         run: echo "Hello, world!"
 
       - name: Display GitHub Event
-        run: echo "This workflow was triggered by:"
+        run: echo "This workflow was triggered by: a"
 
       - name: Show Current Directory
         run: echo "Current working directory:"
