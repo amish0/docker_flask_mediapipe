@@ -17,4 +17,4 @@ jobs:
         run: echo "This workflow was triggered by: ${{ github.event_name }}"
 
       - name: Show Current Directory
-        run: echo "Current working directory: $(pwd)"
+        run: echo "Current working directory:"
