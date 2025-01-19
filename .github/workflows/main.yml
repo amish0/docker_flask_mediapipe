@@ -1,0 +1,20 @@
+name: Echo Workflow on Self-Hosted Runner
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  echo-job:
+    name: Echo Messages
+    runs-on: self-hosted
+    steps:
+      - name: Say Hello
+        run: echo "Hello, world!"
+
+      - name: Display GitHub Event
+        run: echo "This workflow was triggered by: ${{ github.event_name }}"
+
+      - name: Show Current Directory
+        run: echo "Current working directory: $(pwd)"
