@@ -1,0 +1,9 @@
+flask
+flask-cors
+flask_socketio
+# opencv-python-headless
+# opencv-contrib-python-headless
+opencv-contrib-python
+opencv-python
+
+# mediapipe

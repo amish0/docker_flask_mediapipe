@@ -1,0 +1,28 @@
+<html> 
+ <head> 
+   <title>Flask Static Demo</title> 
+   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+   <script type="text/javascript" charset="utf-8">
+      socket = io.connect(
+            "http://" + document.domain + ":" + location.port
+            // "http://" + "192.168.99.94" + ":" + location.port
+          );
+      socket.on('connect', function() {
+          socket.emit('my event', {data: 'I\'m connected!'});
+      });
+      socket.on('frame', function(msg) {
+          console.log(msg)
+          document.getElementById("01").innerHTML = msg;
+          socket.emit('video_frame', {data: 'I\'m connected!'});
+            // sendFrame();
+      });
+
+    
+    
+  </script>
+ </head> 
+ <body> 
+   <h1 id="01">{{message}}</h1> 
+ </body> 
+</html> 

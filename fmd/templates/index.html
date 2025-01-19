@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Interface</title>
+    <style>
+        #video-container {
+            margin: auto;
+            float: left;
+            width: 40%;
+        }
+
+        #frame-container {
+            margin: auto;
+            float: left;
+            width: 40%;
+        }
+
+        #video {
+            width: 100%;
+        }
+
+        #frame {
+            width: 100%;
+        }
+    </style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.1/socket.io.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" type="text/javascript">
+
+    </script>
+
+</head>
+
+<body>
+    <div id="video-container">
+        <video id="video" autoplay playsinline></video>
+    </div>
+
+    <div id="frame-container">
+        <img id="frame" autoplay playsinline></img>
+    </div>
+
+    <script>
+        const video = document.getElementById('video');
+
+        // Get user media (camera)
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function (stream) {
+                video.srcObject = stream;
+                const socket = io.connect(
+                    "http://" + document.domain + ":" + location.port
+                    // "http://" + "192.168.99.94" + ":" + location.port
+                );
+
+                //    variable to for next frame
+                var nextFrame = 0;
+                // Send a frame to the server
+                socket.on('my_response', function (msg) {
+                    // {'data': 'Connected'}
+                    if (msg['data'] === 'Connected') {
+                        console.log('Connected to server');
+                        const canvas = document.createElement('canvas');
+                        canvas.width = video.videoWidth;
+                        canvas.height = video.videoHeight;
+                        const context = canvas.getContext('2d');
+                        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                        const imageDataURL = canvas.toDataURL('image/jpeg');
+                        socket.emit('video_frame', { frame: imageDataURL });
+                    }
+                });
+
+                // Send video stream frames to the server
+                // const sendFrame = () => {
+                socket.on('request_frame', (msg) => {
+                    console.log('Request for frame received');
+                    console.log(msg['frame']);
+                    // display the received frame in the separate video element
+                    const frame = document.getElementById('frame');
+                    frame.src = msg['frame'];
+
+                    // send the next frame
+                    // 
+                    // Open a new window to display the frame
+                    // const frameWindow = window.open('', '_blank');
+                    //     frameWindow.document.write('<img src="' + data.frame + '">');
+                    const canvas = document.createElement('canvas');
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    const context = canvas.getContext('2d');
+                    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    const imageDataURL = canvas.toDataURL('image/jpeg');
+
+                    socket.emit('video_frame', { frame: imageDataURL });
+
+                    // Continue sending frames
+                    // requestAnimationFrame(sendFrame);
+                });
+                // };
+                // Start sending frames
+                // sendFrame();
+            })
+            .catch(function (error) {
+                console.error('Error accessing the camera:', error);
+            });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,52 @@
+name: Environment and Repository Variables Test
+
+on:
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - developer
+jobs:
+  test_environment_variable:
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      name: production
+      app_id: ${{vars.APP_ID }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Display Python version
+        run: |
+          python --version
+          pip --version
+      - name: Echo the current date and time
+        run: |
+          echo "The current date and time is $(date)."
+          echo "initial test successful"
+          echo "enviroment variable $app_id"
+      
+
+      # - name: Echo the current date and time
+      #   run: |
+      #     echo "The current date and time is $(date)."
+      #     echo "initial test successful"
+      #     # echo list of all job done
+      #     echo "List of all jobs done"
+      #     echo "github environment variables ${{ env.NAME }}$"
+      #     echo "description: ${{env.DESCRIPTION}}"
+      #     echo "APP ID: ${{ var.APP_ID }}"
+      #     echo "GITHUB_SHA: ${{ github.sha }}"
+      #     echo "GITHUB_REPOSITORY: ${{ github.repository }}"
+      #     echo "GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}"
+      #     echo "GITHUB_ACTOR: ${{ github.actor }}"
+      #     echo "GITHUB_WORKFLOW: ${{ github.workflow }}"
+      #     echo "GITHUB_ACTION: ${{ github.action }}"
+      #     echo "GITHUB_EVENT_NAME: ${{ github.event_name }}"
+      #     echo "GITHUB_EVENT_PATH: ${{ github.event_path }}"
+    
